@@ -33,7 +33,7 @@ try:
 	ser.open()
 except Exception as e:
 	print ("Error opening serial port:")
-	print e
+	print (e)
 	exit()
 
 if ser.isOpen():

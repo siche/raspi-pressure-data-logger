@@ -32,7 +32,7 @@ ser.dsrdtr = False  # Hardware flow control (DSR/DTR)
 try:
 	ser.open()
 except Exception as e:
-	print "Error opening serial port:"
+	print ("Error opening serial port:")
 	print e
 	exit()
 
@@ -63,7 +63,7 @@ if ser.isOpen():
 		# Stores values in an array 
 		try:
 			current_time = str(datetime.datetime.utcnow())
-			print "Main chamber pressure {0} Transverse cooling pressure {1} Oven pressure {2}".format(main, tc, oven) 
+			print ("Main chamber pressure {0} Transverse cooling pressure {1} Oven pressure {2}".format(main, tc, oven)) 
 			data_body = [
 				{
 					"measurement": "pressure",
@@ -76,8 +76,8 @@ if ser.isOpen():
 				}
 			]		
 		except Exception as e2:
-			print "Error storing data:"
-			print e2
+			print ("Error storing data:")
+			print (e2)
 			
 		# Sends data to InfluxDB server 
 		try:
@@ -92,8 +92,8 @@ if ser.isOpen():
 		# Data recovery code was adapted from: https://github.com/JQIamo/RPi-Temp-Humidity-Monitor	
 		# Data is saved locally on failure	
 		except Exception as e3:
-			print "Error sending data:"
-			print e3
+			print ("Error sending data:")
+			print (e3)
 			missedDirectory = parser.get('missed','location')
 			try:
 				os.makedirs(missedDirectory)
@@ -102,12 +102,12 @@ if ser.isOpen():
 					raise
 			saveFilename = "%d-missedPressure.json" % time.time()
 			savePath = os.path.join(missedDirectory, saveFilename)
-			print "Attempting to save pressure readings locally to %s" % savePath
+			print ("Attempting to save pressure readings locally to %s" % savePath)
 			with open(savePath,'w') as outfile:
 				json.dump(data_body, outfile)						
 		ser.close()
 	except Exception as e1:
-		print "Error communication failed:" 
-		print  e1 
+		print ("Error communication failed:" )
+		print(e1)
 else:
-	print "Serial port cannot be opened"
+	print ("Serial port cannot be opened")
